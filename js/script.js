@@ -1,28 +1,6 @@
-// milestone 1:
-// definire un array di oggetti; ogni oggetto
-// rappresenta un'icona, che è caratterizzata da:
-// nome, prefisso, tipo e famiglia.
-// Utilizzando la funzione forEach e il template
-// literal, visualizzare in pagina tutte le icone con il
-// proprio nome.
-
-// milestone 2:
-// definire un array di colori e associare ad ogni
-// tipo di icona un colore.
-// Visualizzare le icone di colore diverso in base al
-// tipo.
-
-// milestone 3:
-// aggiungere una select per filtrare le icone in
-// base al tipo.
-// Popolare le options della select dinamicamente
-// e, ogni volta che cambia il valore selezionato,
-// visualizzare le icone corrispondenti.
-
 $(document).ready(
     function() {
 
-        // Definisco l'array di oggetti
         const icons = [
             {
             name: "dog",
@@ -124,11 +102,10 @@ $(document).ready(
 
         const iconsContainer = $(".wrapper-bottom");
 
-        // Definisco l'array di colori
         let colors = [
             "#be0505",
             "#1900b5",
-            "#ebff00",
+            "#c4d217",
         ];
 
         let types = getTypeFromArray (icons);
@@ -136,6 +113,23 @@ $(document).ready(
         let newIconsArray = createNewIconsArrayWithColors (icons, colors, types);
 
         printItemsInHtml (iconsContainer, newIconsArray);
+
+        printNewOptionTagsInHtml ($("#type"), types);
+
+        $("#type").change(
+            function() {
+                let optValue = $(this).val();
+
+                if (optValue == "") {
+                    printItemsInHtml (iconsContainer, newIconsArray);
+                } else {
+                    const filteredType = newIconsArray.filter( (element) => {
+                        return element.type == optValue;
+                    } );
+                    printItemsInHtml (iconsContainer, filteredType);
+                }
+            }
+        );
 
     }
 );
@@ -145,13 +139,15 @@ $(document).ready(
 // funzione che permette di stampare gli elementi dell'array icons nella pagina
 function printItemsInHtml (container, array) {
 
+    container.html("");
+
     array.forEach((element) => {
 
         const {name, family, prefix, color} = element;
 
         container.append(`
-            <div class="item">
-                <i class="${family} ${prefix}${name}" style="color: ${color}"></i>
+            <div class="item" style="color: ${color}">
+                <i class="${family} ${prefix}${name}"></i>
                 <h5 class="icon-name">${name.toUpperCase()}</h5>
             </div>
         `);
@@ -190,4 +186,16 @@ function createNewIconsArrayWithColors (iconsArray, colorsArray, typesArray) {
 
     return newArray;
 
+}
+
+// funzione che ci permette di creare nuovi option all'interno del tag <select>
+function printNewOptionTagsInHtml ( select, typesArray ) {
+
+    typesArray.forEach( (element) => {
+
+        select.append(`
+            <option value="${element}">${element}</option>`
+        );
+
+    } );
 }
