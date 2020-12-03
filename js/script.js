@@ -123,27 +123,71 @@ $(document).ready(
         ];
 
         const iconsContainer = $(".wrapper-bottom");
-        printItemsInHtml (iconsContainer, icons);
-        console.log(printItemsInHtml(iconsContainer, icons));
 
-        
+        // Definisco l'array di colori
+        let colors = [
+            "#be0505",
+            "#1900b5",
+            "#ebff00",
+        ];
+
+        let types = getTypeFromArray (icons);
+
+        let newIconsArray = createNewIconsArrayWithColors (icons, colors, types);
+
+        printItemsInHtml (iconsContainer, newIconsArray);
+
     }
 );
 
 //------------------------------------------------------
 
+// funzione che permette di stampare gli elementi dell'array icons nella pagina
 function printItemsInHtml (container, array) {
 
     array.forEach((element) => {
 
-        const {name, family, prefix} = element;
+        const {name, family, prefix, color} = element;
 
         container.append(`
             <div class="item">
-                <i class="${family} ${prefix}${name}"></i>
+                <i class="${family} ${prefix}${name}" style="color: ${color}"></i>
                 <h5 class="icon-name">${name.toUpperCase()}</h5>
             </div>
         `);
     });
+}
+
+// funzione che ci restituisce un nuovo array con solamente i 3 type dei vari elementi all'interno dell'array icons
+function getTypeFromArray (array) {
+
+    const typesArray = [];
+
+    array.forEach( (element) => {
+        const {type} = element;
+
+        if (typesArray.includes(type) == false ) {
+            typesArray.push(type);
+        }
+    } );
+
+    return typesArray;
+}
+
+// funzione che ci restituisce una nuova array con l'aggiunta della chiave color, con il valore che viene assegnato in base al type dell'elemento
+function createNewIconsArrayWithColors (iconsArray, colorsArray, typesArray) {
+
+    const newArray = iconsArray.map ( (element) => {
+        const index = typesArray.indexOf(element.type);
+        const iconColor = colorsArray[index];
+
+        const newObject = {
+            ...element,
+            color: iconColor,
+        }
+        return newObject;
+    });
+
+    return newArray;
 
 }
