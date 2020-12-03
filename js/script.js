@@ -122,46 +122,28 @@ $(document).ready(
             },
         ];
 
-        icons.forEach((element) => {
-            const iconsContainer = $(".wrapper-bottom");
+        const iconsContainer = $(".wrapper-bottom");
+        printItemsInHtml (iconsContainer, icons);
+        console.log(printItemsInHtml(iconsContainer, icons));
 
-            iconsContainer.append(`
-                <div class="item">
-                    <i class="${element.family} ${element.prefix}${element.name}"></i>
-                    <h5 class="icon-name">${element.name.toUpperCase()}</h5>
-                </div>
-            `);
-        });
-
+        
     }
 );
 
-
-
-
 //------------------------------------------------------
 
+function printItemsInHtml (container, array) {
 
+    array.forEach((element) => {
 
-//         const iconsContainer = $(".wrapper-container");
-//         printItemsInHtml (iconsContainer, icons);
-//         console.log(printItemsInHtml(iconsContainer, icons));
+        const {name, family, prefix} = element;
 
-//
-// //------------------------------------------------------
-//
-// function printItemsInHtml (container, array) {
-//
-//     array.forEach((element) => {
-//
-//         const {name, family, prefix} = element;
-//
-//         container.append(`
-//             <div class="item">
-//                 <i class="${family} ${prefix}${name}"></i>
-//                 <h5 class="icon-name">${name.toUpperCase()}</h5>
-//             </div>
-//         `);
-//     });
-//
-// }
+        container.append(`
+            <div class="item">
+                <i class="${family} ${prefix}${name}"></i>
+                <h5 class="icon-name">${name.toUpperCase()}</h5>
+            </div>
+        `);
+    });
+
+}
